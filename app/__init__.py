@@ -13,7 +13,6 @@ from flask import Flask, render_template
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
-from app.routes import artists_bp, shows_bp, venues_bp
 from forms import *
 
 from .config import Config
@@ -25,30 +24,24 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 
-def create_app():
-    """
-    Create and configure the Flask application.
-
-    This function sets up the Flask app, initializes extensions, registers routes and blueprints,
-    configures Jinja filters, and sets up logging for non-debug environments.
-
-    Returns:
-        Flask: The configured Flask application instance.
-    """
-    # Create the Flask app instance
+def create_app(seed=False):
     app = Flask(__name__)
+    app.config.from_object("app.config.Config")
 
-    # Load configuration settings
-    app.config.from_object(Config)
-
-    # Initialize extensions with the app
     db.init_app(app)
     migrate.init_app(app, db)
+
+    from app.models import Artist, Show, Venue
+    from app.routes import artists_bp, shows_bp, venues_bp
+
+    # Register blueprints
+    app.register_blueprint(artists_bp, url_prefix="/artists")
+    app.register_blueprint(shows_bp, url_prefix="/shows")
+    app.register_blueprint(venues_bp, url_prefix="/venues")
 
     # ----------------------------------------------------------------------------#
     # Routes
     # ----------------------------------------------------------------------------#
-
     # Home and Error Handlers
     @app.route("/")
     def index():
@@ -61,11 +54,6 @@ def create_app():
     @app.errorhandler(500)
     def server_error(error):
         return render_template("errors/500.html"), 500
-
-    # Register blueprints
-    app.register_blueprint(artists_bp, url_prefix="/artists")
-    app.register_blueprint(shows_bp, url_prefix="/shows")
-    app.register_blueprint(venues_bp, url_prefix="/venues")
 
     # Add custom Jinja filter for datetime formatting
     app.jinja_env.filters["datetime"] = format_datetime
