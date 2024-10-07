@@ -1,5 +1,6 @@
 {% extends 'layouts/main.html' %}
 {% block title %}Fyyur{% endblock %}
+
 {% block content %}
 <div class="row">
 	<div class="col-sm-6">
@@ -19,7 +20,9 @@
 		</h3>
 	</div>
 	<div class="col-sm-6 hidden-sm hidden-xs">
-		<img id="front-splash" src="{{ url_for('static',filename='img/front-splash.jpg') }}" alt="Front Photo of Musical Band" />
+		<img id="front-splash" src="{{ url_for('static',filename='img/front-splash.jpg') }}"
+			alt="Front Photo of Musical Band" />
 	</div>
 </div>
+
 {% endblock %}
