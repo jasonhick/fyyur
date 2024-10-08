@@ -16,12 +16,7 @@ class Artist(db.Model):
     seeking_talent = db.Column(db.Boolean, default=False)
     seeking_venue = db.Column(db.Boolean, default=False)
     website_link = db.Column(db.String(500))
-    # shows = db.relationship("Show", backref="artist", cascade="all, delete")
-
-    # upcoming_shows_count = db.Column(db.Integer, default=0)
-    # upcoming_shows = db.Column(db.PickleType)
-    # past_shows_count = db.Column(db.Integer, default=0)
-    # past_shows = db.Column(db.PickleType)
+    shows = db.relationship("Show", backref="artist", cascade="all, delete")
 
     # used to debug data
     def to_dict(self):

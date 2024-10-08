@@ -77,10 +77,10 @@ def seed_data():
 
         db.session.add_all([venue1, venue2, venue3, venue4, venue5])
         db.session.commit()
+        print("Venue data added successfully!")
 
     if Artist.query.first():
         print("Artist data already exists. Skipping...")
-        return
     else:
         # Create sample artists
         artist1 = Artist(
@@ -155,11 +155,19 @@ def seed_data():
 
         db.session.add_all([artist1, artist2, artist3, artist4, artist5])
         db.session.commit()
+        print("Artist data added successfully!")
 
-    # # Create sample shows
-    # show1 = Show(artist_id=1, venue_id=1, start_time=datetime(2023, 5, 21, 21, 30))
-    # show2 = Show(artist_id=2, venue_id=2, start_time=datetime(2023, 6, 15, 20, 00))
+    if Show.query.first():
+        print("Show data already exists. Skipping...")
+        return
+    else:
+        # Create sample shows
+        show1 = Show(artist_id=1, venue_id=1, start_time=datetime(2024, 11, 21, 21, 30))
+        show2 = Show(artist_id=2, venue_id=2, start_time=datetime(2024, 11, 21, 20, 00))
+        show3 = Show(artist_id=3, venue_id=3, start_time=datetime(2024, 11, 21, 20, 00))
+        show4 = Show(artist_id=4, venue_id=4, start_time=datetime(2023, 11, 21, 20, 00))
+        show5 = Show(artist_id=5, venue_id=5, start_time=datetime(2023, 11, 21, 20, 00))
 
-    # Add to session and commit
-    db.session.commit()
-    print("Seed data added successfully!")
+        db.session.add_all([show1, show2, show3, show4, show5])
+        db.session.commit()
+        print("Show data added successfully!")

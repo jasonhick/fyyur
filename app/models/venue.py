@@ -17,11 +17,7 @@ class Venue(db.Model):
     seeking_description = db.Column(db.String(500))
     seeking_talent = db.Column(db.Boolean, default=False)
     website = db.Column(db.String(500))
-
-    # upcoming_shows_count = db.Column(db.Integer, default=0)
-    # upcoming_shows = db.Column(db.PickleType)
-    # past_shows_count = db.Column(db.Integer, default=0)
-    # past_shows = db.Column(db.PickleType)
+    shows = db.relationship("Show", backref="venue", cascade="all, delete")
 
     def __repr__(self):
         return f"<Venue {self.id} {self.name}>"

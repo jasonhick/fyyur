@@ -125,8 +125,8 @@ class ArtistForm(Form):
         choices=[(county, county) for county in COUNTIES],
     )
     phone = StringField(
-        # TODO implement validation logic for phone
-        "phone"
+        "phone",
+        validators=[DataRequired()],
     )
     image_link = StringField("image_link")
     genres = SelectMultipleField(
