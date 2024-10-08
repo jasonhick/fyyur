@@ -15,8 +15,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 from forms import *
 
-from .config import Config
-
 collections.Callable = collections.abc.Callable
 
 # Initialize extensions
@@ -24,9 +22,12 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 
-def create_app(seed=False):
+# ----------------------------------------------------------------------------#
+# Create the Flask app instance
+# ----------------------------------------------------------------------------#
+def create_app():
     app = Flask(__name__)
-    app.config.from_object("app.config.Config")
+    app.config.from_object("config.Config")
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -39,9 +40,6 @@ def create_app(seed=False):
     app.register_blueprint(shows_bp, url_prefix="/shows")
     app.register_blueprint(venues_bp, url_prefix="/venues")
 
-    # ----------------------------------------------------------------------------#
-    # Routes
-    # ----------------------------------------------------------------------------#
     # Home and Error Handlers
     @app.route("/")
     def index():
