@@ -84,58 +84,73 @@ def seed_data():
     else:
         # Create sample artists
         artist1 = Artist(
-            name="The Beatles",
-            genres=["Rock", "Pop"],
-            city="Liverpool",
-            county="Merseyside",
-            website="https://www.thebeatles.com/",
+            name="Coldplay",
+            city="London",
+            county="Greater London",
+            phone="+44 20 7890 1234",
+            genres=["Rock n Roll"],
+            facebook_link="https://www.facebook.com/coldplay",
+            image_link="https://upload.wikimedia.org/wikipedia/commons/2/2e/ColdplayBBC071221_%28cropped%29.jpg",
             seeking_talent=False,
+            seeking_venue=False,
             seeking_description="",
-            image_link="https://upload.wikimedia.org/wikipedia/commons/0/0d/The_Fabs.JPG",
+            website_link="https://www.coldplay.com",
         )
 
         artist2 = Artist(
-            name="The Rolling Stones",
-            genres=["Rock", "Blues"],
+            name="Led Zeppelin",
             city="London",
             county="Greater London",
-            website="https://www.rollingstones.com/",
+            phone="+44 20 8901 4567",
+            genres=["Heavy Metal"],
+            facebook_link="https://www.facebook.com/ledzeppelin",
+            image_link="https://static.independent.co.uk/s3fs-public/thumbnails/image/2014/03/13/14/led-zeppelin2.jpg",
             seeking_talent=False,
+            seeking_venue=False,
             seeking_description="",
-            image_link="https://upload.wikimedia.org/wikipedia/commons/e/ef/The_Rolling_Stones_1965.JPG",
+            website_link="https://www.ledzeppelin.com",
         )
 
         artist3 = Artist(
             name="Queen",
-            genres=["Rock", "Pop", "Opera Rock"],
             city="London",
             county="Greater London",
-            website="https://www.queenonline.com/",
+            phone="+44 20 2233 4455",
+            genres=["Pop"],
+            facebook_link="https://www.facebook.com/Queen/",
+            image_link="https://lookingglass.montroseschool.org/wp-content/uploads/queen.jpeg",
             seeking_talent=False,
+            seeking_venue=False,
             seeking_description="",
-            image_link="https://upload.wikimedia.org/wikipedia/commons/f/f2/Queen_performing_in_New_Haven%2C_CT%2C_November_1977.png",
+            website_link="https://www.queenonline.com",
         )
 
         artist4 = Artist(
-            name="Led Zeppelin",
-            genres=["Hard Rock", "Heavy Metal"],
-            city="London",
-            county="Greater London",
-            website="https://www.ledzeppelin.com/",
+            name="The Beatles",
+            city="Liverpool",
+            county="Merseyside",
+            phone="+44 151 1234 7890",
+            genres=["Pop"],
+            facebook_link="https://www.facebook.com/thebeatles/",
+            image_link="https://c.files.bbci.co.uk/1260/production/_108240740_beatles-abbeyroad-index-reuters-applecorps.jpg",
             seeking_talent=False,
+            seeking_venue=False,
             seeking_description="",
-            image_link="https://upload.wikimedia.org/wikipedia/commons/d/df/Led_Zeppelin_1977.jpg",
+            website_link="https://www.thebeatles.com",
         )
 
         artist5 = Artist(
-            name="Coldplay",
-            genres=["Alternative Rock", "Pop Rock"],
+            name="The Rolling Stones",
             city="London",
             county="Greater London",
-            website="https://www.coldplay.com/",
+            phone="+44 20 5566 8899",
+            genres=["Blues"],
+            facebook_link="https://www.facebook.com/therollingstones/",
+            image_link="https://ca-times.brightspotcdn.com/dims4/default/9c5c2a3/2147483647/strip/true/crop/6000x4763+0+0/resize/1200x953!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F48%2Ffe%2F6412c05146738e437b2f84953e4b%2Fcredit-mark-seliger-1.jpg",
             seeking_talent=False,
+            seeking_venue=False,
             seeking_description="",
-            image_link="https://upload.wikimedia.org/wikipedia/commons/d/db/Coldplay_performing_in_2017.jpg",
+            website_link="https://www.rollingstones.com",
         )
 
         db.session.add_all([artist1, artist2, artist3, artist4, artist5])

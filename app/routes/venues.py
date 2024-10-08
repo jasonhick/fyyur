@@ -4,8 +4,7 @@ from flask import Blueprint, flash, jsonify, redirect, render_template, request,
 
 from app import db
 from app.forms import VenueForm
-from app.models import Show, Venue
-from app.models.artist import Artist
+from app.models import Artist, Show, Venue
 from utils.form_utils import flash_form_errors
 
 venues_bp = Blueprint("venues", __name__)
@@ -203,7 +202,7 @@ def edit_venue(venue_id):
 #  Edit Venue POST handler - venues.update_venue
 #  ----------------------------------------------------------------
 @venues_bp.route("/<int:venue_id>/edit", methods=["POST"])
-def update_venue(venue_id):
+def edit_venue_submission(venue_id):
     form = VenueForm()
     venue = Venue.query.get_or_404(venue_id)
 

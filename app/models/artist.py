@@ -15,10 +15,17 @@ class Artist(db.Model):
     seeking_description = db.Column(db.String(500))
     seeking_talent = db.Column(db.Boolean, default=False)
     seeking_venue = db.Column(db.Boolean, default=False)
-    website = db.Column(db.String(500))
+    website_link = db.Column(db.String(500))
     # shows = db.relationship("Show", backref="artist", cascade="all, delete")
 
     # upcoming_shows_count = db.Column(db.Integer, default=0)
     # upcoming_shows = db.Column(db.PickleType)
     # past_shows_count = db.Column(db.Integer, default=0)
     # past_shows = db.Column(db.PickleType)
+
+    # used to debug data
+    def to_dict(self):
+        """Convert the SQLAlchemy model instance to a dictionary."""
+        return {
+            column.name: getattr(self, column.name) for column in self.__table__.columns
+        }

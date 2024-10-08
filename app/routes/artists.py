@@ -16,8 +16,10 @@ artists_bp = Blueprint("artists", __name__)
 @artists_bp.route("/")
 def all_artists():
     # Query all artists from the database
-    data = Artist.query.order_by(Artist.name).all()
-    return render_template("pages/artists.html", artists=data)
+    artists = Artist.query.order_by(Artist.name).all()
+    # used to debug data in html template
+    data = {"artists": [artist.to_dict() for artist in artists]}
+    return render_template("pages/artists.html", artists=artists, data=data)
 
 
 # ----------------------------------------------------------------------------#
@@ -144,6 +146,8 @@ def edit_artist(artist_id):
 def edit_artist_submission(artist_id):
     form = ArtistForm()
     artist = Artist.query.get_or_404(artist_id)
+
+    print(form.data)
 
     if form.validate_on_submit():
         try:
