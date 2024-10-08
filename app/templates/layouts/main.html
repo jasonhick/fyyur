@@ -64,9 +64,9 @@
                 </form>
               {% endif %}
 
-              {% if (request.endpoint == 'artists') or
-              (request.endpoint == 'search_artists') or
-              (request.endpoint == 'show_artist') %}
+              {% if (request.endpoint == 'artists.all_artists') or
+              (request.endpoint == 'artists.search_artists') or
+              (request.endpoint == 'artists.show_artist') %}
               <form class="search" method="post" action="/artists/search">
                 <input class="form-control" type="search" name="search_term" placeholder="Find an artist"
                   aria-label="Search">
@@ -76,10 +76,10 @@
           </ul>
           <ul class="nav navbar-nav">
             <li {% if request.endpoint=='venues' %} class="active" {% endif %}><a 
-              href="{{ url_for('venues.all_venues') }}">Venues</a>
+              href="{{ url_for('venues.all_venues') }}">Venues</a> 
             </li>
             <li {% if request.endpoint=='artists' %} class="active" {% endif %}>
-              <a href="{{ url_for('artists.artists') }}">Artists</a>
+              <a href="{{ url_for('artists.all_artists') }}">Artists</a>
             </li>
             <li {% if request.endpoint=='shows' %} class="active" {% endif %}>
               <a href="{{ url_for('shows.shows') }}">Shows</a>

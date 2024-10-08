@@ -13,6 +13,7 @@ class Artist(db.Model):
     name = db.Column(db.String, nullable=False)
     phone = db.Column(db.String(120), nullable=True)
     seeking_description = db.Column(db.String(500))
+    seeking_talent = db.Column(db.Boolean, default=False)
     seeking_venue = db.Column(db.Boolean, default=False)
     website = db.Column(db.String(500))
     # shows = db.relationship("Show", backref="artist", cascade="all, delete")

@@ -14,8 +14,6 @@ venues_bp = Blueprint("venues", __name__)
 # ----------------------------------------------------------------------------#
 # All venues controller - venues.all_venues
 # ----------------------------------------------------------------------------#
-
-
 @venues_bp.route("/")
 def all_venues():
     # Query all venues and group them by city and county
@@ -50,8 +48,6 @@ def all_venues():
 # ----------------------------------------------------------------------------#
 # Venues search controller - venues.search_venues
 # ----------------------------------------------------------------------------#
-
-
 @venues_bp.route("/search", methods=["POST"])
 def search_venues():
     search_term = request.form.get("search_term", "")
@@ -68,8 +64,6 @@ def search_venues():
 # ----------------------------------------------------------------------------#
 # Venue detail controller - venues.show_venue
 # ----------------------------------------------------------------------------#
-
-
 @venues_bp.route("/<int:venue_id>")
 def show_venue(venue_id):
     # shows the venue page with the given venue_id
@@ -114,8 +108,6 @@ def show_venue(venue_id):
 #  ----------------------------------------------------------------
 #  Create Venue Form - venues.create_venue_form
 #  ----------------------------------------------------------------
-
-
 @venues_bp.route("/create", methods=["GET"])
 def create_venue_form():
     form = VenueForm()
@@ -125,12 +117,11 @@ def create_venue_form():
 #  ----------------------------------------------------------------
 #  Create Venue POST handler - venues.create_venue_submission
 #  ----------------------------------------------------------------
-
-
 @venues_bp.route("/create", methods=["POST"])
 def create_venue_submission():
     form = VenueForm()
     venue = Venue()
+
     if form.validate_on_submit():
         try:
             form.populate_obj(venue)
@@ -146,20 +137,12 @@ def create_venue_submission():
             )
     else:
         flash_form_errors(form)
-
-    # on successful db insert, flash success
-    # flash("Venue " + request.form["name"] + " was successfully listed!")
-    # TODO: on unsuccessful db insert, flash an error instead.
-    # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
-    # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
-    return render_template("pages/home.html")
+        return render_template("pages/home.html")
 
 
 #  ----------------------------------------------------------------
 #  Delete Venue - venues.delete_venue
 #  ----------------------------------------------------------------
-
-
 @venues_bp.route("/<venue_id>", methods=["DELETE"])
 def delete_venue(venue_id):
     try:
@@ -217,10 +200,8 @@ def edit_venue(venue_id):
 
 
 #  ----------------------------------------------------------------
-#  Update Venue POST handler - venues.update_venue
+#  Edit Venue POST handler - venues.update_venue
 #  ----------------------------------------------------------------
-
-
 @venues_bp.route("/<int:venue_id>/edit", methods=["POST"])
 def update_venue(venue_id):
     form = VenueForm()
