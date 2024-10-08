@@ -12,23 +12,23 @@ venues_bp = Blueprint("venues", __name__)
 
 
 # ----------------------------------------------------------------------------#
-# Main venues controller - venues.all_venues
+# All venues controller - venues.all_venues
 # ----------------------------------------------------------------------------#
 
 
 @venues_bp.route("/")
 def all_venues():
-    # Query all venues and group them by city and state
+    # Query all venues and group them by city and county
     venues = (
-        db.session.query(Venue.city, Venue.state)
+        db.session.query(Venue.city, Venue.county)
         .distinct()
-        .order_by("state", "city")
+        .order_by("county", "city")
         .all()
     )
     data = []
 
     for venue in venues:
-        city_venues = Venue.query.filter_by(city=venue.city, state=venue.state).all()
+        city_venues = Venue.query.filter_by(city=venue.city, county=venue.county).all()
         venue_data = []
 
         for v in city_venues:
@@ -42,7 +42,7 @@ def all_venues():
                 }
             )
 
-        data.append({"city": venue.city, "state": venue.state, "venues": venue_data})
+        data.append({"city": venue.city, "county": venue.county, "venues": venue_data})
 
     return render_template("pages/venues.html", areas=data)
 
@@ -89,37 +89,21 @@ def show_venue(venue_id):
         .all()
     )
 
+    def format_shows(shows):
+        return [
+            {
+                "artist_id": show.artist_id,
+                "artist_name": show.artist.name,
+                "artist_image_link": show.artist.image_link,
+                "start_time": show.start_time.strftime("%Y-%m-%d %H:%M:%S"),
+            }
+            for show in shows
+        ]
+
     data = {
-        "id": venue.id,
-        "name": venue.name,
-        "genres": venue.genres,
-        "address": venue.address,
-        "city": venue.city,
-        "state": venue.state,
-        "phone": venue.phone,
-        "website": venue.website,
-        "facebook_link": venue.facebook_link,
-        "seeking_talent": venue.seeking_talent,
-        "seeking_description": venue.seeking_description,
-        "image_link": venue.image_link,
-        "past_shows": [
-            {
-                "artist_id": show.artist_id,
-                "artist_name": show.artist.name,
-                "artist_image_link": show.artist.image_link,
-                "start_time": show.start_time.strftime("%Y-%m-%d %H:%M:%S"),
-            }
-            for show in past_shows
-        ],
-        "upcoming_shows": [
-            {
-                "artist_id": show.artist_id,
-                "artist_name": show.artist.name,
-                "artist_image_link": show.artist.image_link,
-                "start_time": show.start_time.strftime("%Y-%m-%d %H:%M:%S"),
-            }
-            for show in upcoming_shows
-        ],
+        **venue.__dict__,
+        "past_shows": format_shows(past_shows),
+        "upcoming_shows": format_shows(upcoming_shows),
         "past_shows_count": len(past_shows),
         "upcoming_shows_count": len(upcoming_shows),
     }
@@ -145,11 +129,26 @@ def create_venue_form():
 
 @venues_bp.route("/create", methods=["POST"])
 def create_venue_submission():
-    # TODO: insert form data as a new Venue record in the db, instead
-    # TODO: modify data to be the data object returned from db insertion
+    form = VenueForm()
+    venue = Venue()
+    if form.validate_on_submit():
+        try:
+            form.populate_obj(venue)
+            db.session.add(venue)
+            db.session.commit()
+            flash(f"Venue {venue.name} was successfully listed!")
+            return redirect(url_for("venues.show_venue", venue_id=venue.id))
+
+        except Exception as e:
+            db.session.rollback()
+            flash(
+                f"An error occurred. Venue {form.name.data} could not be listed. Error: {str(e)}"
+            )
+    else:
+        flash_form_errors(form)
 
     # on successful db insert, flash success
-    flash("Venue " + request.form["name"] + " was successfully listed!")
+    # flash("Venue " + request.form["name"] + " was successfully listed!")
     # TODO: on unsuccessful db insert, flash an error instead.
     # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
     # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/

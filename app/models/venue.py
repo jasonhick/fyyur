@@ -8,6 +8,7 @@ class Venue(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     address = db.Column(db.String(120), nullable=False)
     city = db.Column(db.String(120), nullable=False)
+    county = db.Column(db.String(120), nullable=True)
     facebook_link = db.Column(db.String(120))
     genres = db.Column(db.ARRAY(db.String()), nullable=True)
     image_link = db.Column(db.String(500))
@@ -15,7 +16,6 @@ class Venue(db.Model):
     phone = db.Column(db.String(120), nullable=False)
     seeking_description = db.Column(db.String(500))
     seeking_talent = db.Column(db.Boolean, default=False)
-    state = db.Column(db.String(120), nullable=False)
     website = db.Column(db.String(500))
 
     # upcoming_shows_count = db.Column(db.Integer, default=0)

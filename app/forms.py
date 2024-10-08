@@ -10,6 +10,81 @@ from wtforms import (
 )
 from wtforms.validators import URL, AnyOf, DataRequired
 
+# Define the list of counties as a constant
+COUNTIES = [
+    "Bedfordshire",
+    "Berkshire",
+    "Bristol",
+    "Buckinghamshire",
+    "Cambridgeshire",
+    "Cheshire",
+    "City of London",
+    "Cornwall",
+    "Cumbria",
+    "Derbyshire",
+    "Devon",
+    "Dorset",
+    "Durham",
+    "East Riding of Yorkshire",
+    "East Sussex",
+    "Essex",
+    "Gloucestershire",
+    "Greater London",
+    "Greater Manchester",
+    "Hampshire",
+    "Herefordshire",
+    "Hertfordshire",
+    "Isle of Wight",
+    "Kent",
+    "Lancashire",
+    "Leicestershire",
+    "Lincolnshire",
+    "Merseyside",
+    "Norfolk",
+    "North Yorkshire",
+    "Northamptonshire",
+    "Northumberland",
+    "Nottinghamshire",
+    "Oxfordshire",
+    "Rutland",
+    "Shropshire",
+    "Somerset",
+    "South Yorkshire",
+    "Staffordshire",
+    "Suffolk",
+    "Surrey",
+    "Tyne and Wear",
+    "Warwickshire",
+    "West Midlands",
+    "West Sussex",
+    "West Yorkshire",
+    "Wiltshire",
+    "Worcestershire",
+]
+
+# Define the list of genres as a constant
+GENRES = [
+    "Alternative",
+    "Blues",
+    "Classical",
+    "Country",
+    "Electronic",
+    "Folk",
+    "Funk",
+    "Hip-Hop",
+    "Heavy Metal",
+    "Instrumental",
+    "Jazz",
+    "Musical Theatre",
+    "Pop",
+    "Punk",
+    "R&B",
+    "Reggae",
+    "Rock n Roll",
+    "Soul",
+    "Other",
+]
+
 
 class ShowForm(Form):
     artist_id = StringField("artist_id")
@@ -22,189 +97,42 @@ class ShowForm(Form):
 class VenueForm(Form):
     name = StringField("name", validators=[DataRequired()])
     city = StringField("city", validators=[DataRequired()])
-    state = SelectField(
-        "state",
+    county = SelectField(
+        "county",
         validators=[DataRequired()],
-        choices=[
-            ("AL", "AL"),
-            ("AK", "AK"),
-            ("AZ", "AZ"),
-            ("AR", "AR"),
-            ("CA", "CA"),
-            ("CO", "CO"),
-            ("CT", "CT"),
-            ("DE", "DE"),
-            ("DC", "DC"),
-            ("FL", "FL"),
-            ("GA", "GA"),
-            ("HI", "HI"),
-            ("ID", "ID"),
-            ("IL", "IL"),
-            ("IN", "IN"),
-            ("IA", "IA"),
-            ("KS", "KS"),
-            ("KY", "KY"),
-            ("LA", "LA"),
-            ("ME", "ME"),
-            ("MT", "MT"),
-            ("NE", "NE"),
-            ("NV", "NV"),
-            ("NH", "NH"),
-            ("NJ", "NJ"),
-            ("NM", "NM"),
-            ("NY", "NY"),
-            ("NC", "NC"),
-            ("ND", "ND"),
-            ("OH", "OH"),
-            ("OK", "OK"),
-            ("OR", "OR"),
-            ("MD", "MD"),
-            ("MA", "MA"),
-            ("MI", "MI"),
-            ("MN", "MN"),
-            ("MS", "MS"),
-            ("MO", "MO"),
-            ("PA", "PA"),
-            ("RI", "RI"),
-            ("SC", "SC"),
-            ("SD", "SD"),
-            ("TN", "TN"),
-            ("TX", "TX"),
-            ("UT", "UT"),
-            ("VT", "VT"),
-            ("VA", "VA"),
-            ("WA", "WA"),
-            ("WV", "WV"),
-            ("WI", "WI"),
-            ("WY", "WY"),
-        ],
+        choices=[(county, county) for county in COUNTIES],
     )
     address = StringField("address", validators=[DataRequired()])
     phone = StringField("phone")
     image_link = StringField("image_link")
     genres = SelectMultipleField(
-        # TODO implement enum restriction
         "genres",
         validators=[DataRequired()],
-        choices=[
-            ("Alternative", "Alternative"),
-            ("Blues", "Blues"),
-            ("Classical", "Classical"),
-            ("Country", "Country"),
-            ("Electronic", "Electronic"),
-            ("Folk", "Folk"),
-            ("Funk", "Funk"),
-            ("Hip-Hop", "Hip-Hop"),
-            ("Heavy Metal", "Heavy Metal"),
-            ("Instrumental", "Instrumental"),
-            ("Jazz", "Jazz"),
-            ("Musical Theatre", "Musical Theatre"),
-            ("Pop", "Pop"),
-            ("Punk", "Punk"),
-            ("R&B", "R&B"),
-            ("Reggae", "Reggae"),
-            ("Rock n Roll", "Rock n Roll"),
-            ("Soul", "Soul"),
-            ("Other", "Other"),
-        ],
+        choices=[(genre, genre) for genre in GENRES],
     )
     facebook_link = StringField("facebook_link", validators=[URL()])
     website_link = StringField("website_link")
-
     seeking_talent = BooleanField("seeking_talent")
-
     seeking_description = StringField("seeking_description")
 
 
 class ArtistForm(Form):
     name = StringField("name", validators=[DataRequired()])
     city = StringField("city", validators=[DataRequired()])
-    state = SelectField(
-        "state",
+    county = SelectField(
+        "county",
         validators=[DataRequired()],
-        choices=[
-            ("AL", "AL"),
-            ("AK", "AK"),
-            ("AZ", "AZ"),
-            ("AR", "AR"),
-            ("CA", "CA"),
-            ("CO", "CO"),
-            ("CT", "CT"),
-            ("DE", "DE"),
-            ("DC", "DC"),
-            ("FL", "FL"),
-            ("GA", "GA"),
-            ("HI", "HI"),
-            ("ID", "ID"),
-            ("IL", "IL"),
-            ("IN", "IN"),
-            ("IA", "IA"),
-            ("KS", "KS"),
-            ("KY", "KY"),
-            ("LA", "LA"),
-            ("ME", "ME"),
-            ("MT", "MT"),
-            ("NE", "NE"),
-            ("NV", "NV"),
-            ("NH", "NH"),
-            ("NJ", "NJ"),
-            ("NM", "NM"),
-            ("NY", "NY"),
-            ("NC", "NC"),
-            ("ND", "ND"),
-            ("OH", "OH"),
-            ("OK", "OK"),
-            ("OR", "OR"),
-            ("MD", "MD"),
-            ("MA", "MA"),
-            ("MI", "MI"),
-            ("MN", "MN"),
-            ("MS", "MS"),
-            ("MO", "MO"),
-            ("PA", "PA"),
-            ("RI", "RI"),
-            ("SC", "SC"),
-            ("SD", "SD"),
-            ("TN", "TN"),
-            ("TX", "TX"),
-            ("UT", "UT"),
-            ("VT", "VT"),
-            ("VA", "VA"),
-            ("WA", "WA"),
-            ("WV", "WV"),
-            ("WI", "WI"),
-            ("WY", "WY"),
-        ],
+        choices=[(county, county) for county in COUNTIES],
     )
     phone = StringField(
-        # TODO implement validation logic for state
+        # TODO implement validation logic for phone
         "phone"
     )
     image_link = StringField("image_link")
     genres = SelectMultipleField(
         "genres",
         validators=[DataRequired()],
-        choices=[
-            ("Alternative", "Alternative"),
-            ("Blues", "Blues"),
-            ("Classical", "Classical"),
-            ("Country", "Country"),
-            ("Electronic", "Electronic"),
-            ("Folk", "Folk"),
-            ("Funk", "Funk"),
-            ("Hip-Hop", "Hip-Hop"),
-            ("Heavy Metal", "Heavy Metal"),
-            ("Instrumental", "Instrumental"),
-            ("Jazz", "Jazz"),
-            ("Musical Theatre", "Musical Theatre"),
-            ("Pop", "Pop"),
-            ("Punk", "Punk"),
-            ("R&B", "R&B"),
-            ("Reggae", "Reggae"),
-            ("Rock n Roll", "Rock n Roll"),
-            ("Soul", "Soul"),
-            ("Other", "Other"),
-        ],
+        choices=[(genre, genre) for genre in GENRES],
     )
     facebook_link = StringField(
         # TODO implement enum restriction
