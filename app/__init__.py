@@ -13,8 +13,6 @@ from flask import Flask, render_template
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
-from .forms import *
-
 collections.Callable = collections.abc.Callable
 
 # Initialize extensions
@@ -43,7 +41,19 @@ def create_app():
     # Home and Error Handlers
     @app.route("/")
     def index():
-        return render_template("pages/home.html")
+
+        # Query for the 10 most recently listed artists
+        recent_artists = Artist.query.order_by(Artist.id.desc()).limit(10).all()
+
+        # Query for the 10 most recently listed venues
+        recent_venues = Venue.query.order_by(Venue.id.desc()).limit(10).all()
+
+        # Pass the data to the template
+        return render_template(
+            "pages/home.html",
+            recent_artists=recent_artists,
+            recent_venues=recent_venues,
+        )
 
     @app.errorhandler(404)
     def not_found_error(error):

@@ -8,7 +8,9 @@ from wtforms import (
     SelectMultipleField,
     StringField,
 )
-from wtforms.validators import URL, AnyOf, DataRequired
+from wtforms.validators import URL, DataRequired
+
+from app.models import Artist, Venue
 
 # Define the list of counties as a constant
 COUNTIES = [
@@ -86,12 +88,30 @@ GENRES = [
 ]
 
 
+def get_artists():
+    return Artist.query.all()
+
+
+def get_venues():
+    return Venue.query.all()
+
+
 class ShowForm(Form):
-    artist_id = StringField("artist_id")
-    venue_id = StringField("venue_id")
+    artist_id = SelectField("artist_id", choices=[], validators=[DataRequired()])
+    venue_id = SelectField("venue_id", choices=[], validators=[DataRequired()])
     start_time = DateTimeField(
         "start_time", validators=[DataRequired()], default=datetime.today()
     )
+
+    def __init__(self, *args, **kwargs):
+        super(ShowForm, self).__init__(*args, **kwargs)
+        # Add a default option at the start of the choices
+        self.artist_id.choices = [("", "Select an artist")] + [
+            (artist.id, artist.name) for artist in get_artists()
+        ]
+        self.venue_id.choices = [("", "Select a venue")] + [
+            (venue.id, venue.name) for venue in get_venues()
+        ]
 
 
 class VenueForm(Form):

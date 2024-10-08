@@ -28,7 +28,13 @@ def all_artists():
 @artists_bp.route("/search", methods=["POST"])
 def search_artists():
     search_term = request.form.get("search_term", "")
-    artists = Artist.query.filter(Artist.name.ilike(f"%{search_term}%")).all()
+    artists = Artist.query.filter(
+        db.or_(
+            Artist.name.ilike(f"%{search_term}%"),
+            Artist.city.ilike(f"%{search_term}%"),
+            Artist.county.ilike(f"%{search_term}%"),
+        )
+    ).all()
     response = {
         "count": len(artists),
         "data": artists,

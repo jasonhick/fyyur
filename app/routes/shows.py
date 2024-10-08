@@ -40,7 +40,7 @@ def all_shows():
 def search_shows():
     search_term = request.form.get("search_term", "")
 
-    # Query shows that match the search term in artist name, venue name, or start time
+    # Query shows that match the search term in artist name or venue name
     shows = (
         db.session.query(Show)
         .join(Artist)
@@ -49,7 +49,6 @@ def search_shows():
             db.or_(
                 Artist.name.ilike(f"%{search_term}%"),
                 Venue.name.ilike(f"%{search_term}%"),
-                Show.start_time.cast(db.String).ilike(f"%{search_term}%"),
             )
         )
         .with_entities(

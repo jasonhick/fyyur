@@ -50,7 +50,14 @@ def all_venues():
 @venues_bp.route("/search", methods=["POST"])
 def search_venues():
     search_term = request.form.get("search_term", "")
-    venues = Venue.query.filter(Venue.name.ilike(f"%{search_term}%")).all()
+    venues = Venue.query.filter(
+        db.or_(
+            Venue.name.ilike(f"%{search_term}%"),
+            Venue.city.ilike(f"%{search_term}%"),
+            Venue.county.ilike(f"%{search_term}%"),
+        )
+    ).all()
+
     response = {
         "count": len(venues),
         "data": venues,
