@@ -34,6 +34,44 @@ def all_shows():
 
 
 # ----------------------------------------------------------------------------#
+# Shows search controller - shows.search_shows
+# ----------------------------------------------------------------------------#
+@shows_bp.route("/search", methods=["POST"])
+def search_shows():
+    search_term = request.form.get("search_term", "")
+
+    # Query shows that match the search term in artist name, venue name, or start time
+    shows = (
+        db.session.query(Show)
+        .join(Artist)
+        .join(Venue)
+        .filter(
+            db.or_(
+                Artist.name.ilike(f"%{search_term}%"),
+                Venue.name.ilike(f"%{search_term}%"),
+                Show.start_time.cast(db.String).ilike(f"%{search_term}%"),
+            )
+        )
+        .with_entities(
+            Show.id,
+            Show.start_time,
+            Artist.id.label("artist_id"),
+            Artist.name.label("artist_name"),
+            Artist.image_link.label("artist_image_link"),
+            Venue.id.label("venue_id"),
+            Venue.name.label("venue_name"),
+        )
+        .all()
+    )
+
+    response = {"count": len(shows), "data": shows}
+
+    return render_template(
+        "pages/search_shows.html", results=response, search_term=search_term
+    )
+
+
+# ----------------------------------------------------------------------------#
 # Create Shows Form - shows.create_shows
 # ----------------------------------------------------------------------------#
 @shows_bp.route("/create")

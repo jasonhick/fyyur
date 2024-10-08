@@ -54,14 +54,14 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-          <li>
-            {% if (request.endpoint == 'venues.all_venues') or
+            <li>
+              {% if (request.endpoint == 'venues.all_venues') or
               (request.endpoint == 'venues.search_venues') or
               (request.endpoint == 'venues.show_venue') %}
               <form class="search" method="post" action="{{ url_for('venues.search_venues') }}">
                 <input class="form-control" type="search" name="search_term" placeholder="Find a venue"
                   aria-label="Search">
-                </form>
+              </form>
               {% endif %}
 
               {% if (request.endpoint == 'artists.all_artists') or
@@ -72,11 +72,21 @@
                   aria-label="Search">
               </form>
               {% endif %}
+
+              {% if (request.endpoint == 'shows.all_shows') or
+              (request.endpoint == 'shows.search_shows') or
+              (request.endpoint == 'shows.show_show') %}
+              <form class="search" method="post" action="/shows/search">
+                <input class="form-control" type="search" name="search_term" placeholder="Find a show"
+                  aria-label="Search">
+              </form>
+              {% endif %}
+
             </li>
           </ul>
           <ul class="nav navbar-nav">
-            <li {% if request.endpoint=='venues' %} class="active" {% endif %}><a 
-              href="{{ url_for('venues.all_venues') }}">Venues</a> 
+            <li {% if request.endpoint=='venues' %} class="active" {% endif %}><a
+                href="{{ url_for('venues.all_venues') }}">Venues</a>
             </li>
             <li {% if request.endpoint=='artists' %} class="active" {% endif %}>
               <a href="{{ url_for('artists.all_artists') }}">Artists</a>
