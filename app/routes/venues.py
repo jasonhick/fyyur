@@ -1,6 +1,14 @@
 from datetime import datetime
 
-from flask import Blueprint, flash, jsonify, redirect, render_template, request, url_for
+from flask import (
+    Blueprint,
+    flash,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 
 from app import db
 from app.forms import VenueForm
@@ -25,7 +33,9 @@ def all_venues():
     data = []
 
     for venue in venues:
-        city_venues = Venue.query.filter_by(city=venue.city, county=venue.county).all()
+        city_venues = Venue.query.filter_by(
+            city=venue.city, county=venue.county
+        ).all()
         venue_data = []
 
         for v in city_venues:
@@ -39,7 +49,9 @@ def all_venues():
                 }
             )
 
-        data.append({"city": venue.city, "county": venue.county, "venues": venue_data})
+        data.append(
+            {"city": venue.city, "county": venue.county, "venues": venue_data}
+        )
 
     return render_template("pages/venues.html", areas=data)
 
@@ -73,40 +85,34 @@ def search_venues():
 @venues_bp.route("/<int:venue_id>")
 def show_venue(venue_id):
     # shows the venue page with the given venue_id
+    shows = (
+        db.session.query(Show)
+        .join(Artist)
+        .filter(Show.venue_id == venue_id)
+        .all()
+    )
+
+    past_shows = []
+    upcoming_shows = []
+
+    for show in shows:
+        show_info = {
+            "artist_id": show.artist_id,
+            "artist_name": show.artist.name,
+            "artist_image_link": show.artist.image_link,
+            "start_time": show.start_time.strftime("%Y-%m-%d %H:%M:%S"),
+        }
+        if show.start_time < datetime.now():
+            past_shows.append(show_info)
+        else:
+            upcoming_shows.append(show_info)
+
     venue = Venue.query.get(venue_id)
-
-    past_shows = (
-        db.session.query(Show)
-        .join(Artist)
-        .filter(Show.venue_id == venue_id, Show.start_time < datetime.now())
-        .all()
-    )
-
-    upcoming_shows = (
-        db.session.query(Show)
-        .join(Artist)
-        .filter(Show.venue_id == venue_id, Show.start_time >= datetime.now())
-        .all()
-    )
-
-    def format_shows(shows):
-        return [
-            {
-                "artist_id": show.artist_id,
-                "artist_name": show.artist.name,
-                "artist_image_link": show.artist.image_link,
-                "start_time": show.start_time.strftime("%Y-%m-%d %H:%M:%S"),
-            }
-            for show in shows
-        ]
-
-    data = {
-        **venue.__dict__,
-        "past_shows": format_shows(past_shows),
-        "upcoming_shows": format_shows(upcoming_shows),
-        "past_shows_count": len(past_shows),
-        "upcoming_shows_count": len(upcoming_shows),
-    }
+    data = venue.__dict__
+    data["past_shows"] = past_shows
+    data["upcoming_shows"] = upcoming_shows
+    data["past_shows_count"] = len(past_shows)
+    data["upcoming_shows_count"] = len(upcoming_shows)
 
     return render_template("pages/show_venue.html", venue=data)
 
@@ -168,7 +174,10 @@ def delete_venue(venue_id):
             )
         else:
             flash("Venue not found.", "error")
-            return jsonify({"success": False, "message": "Venue not found."}), 404
+            return (
+                jsonify({"success": False, "message": "Venue not found."}),
+                404,
+            )
     except Exception as e:
         db.session.rollback()
         flash(f"An error occurred. Venue could not be deleted.", "error")
@@ -206,7 +215,7 @@ def edit_venue(venue_id):
 
 
 #  ----------------------------------------------------------------
-#  Edit Venue POST handler - venues.update_venue
+#  Edit Venue POST handler - venues.edit_venue_submission
 #  ----------------------------------------------------------------
 @venues_bp.route("/<int:venue_id>/edit", methods=["POST"])
 def edit_venue_submission(venue_id):
@@ -220,7 +229,9 @@ def edit_venue_submission(venue_id):
             flash(f"Venue {venue.name} was successfully updated!")
         except Exception as e:
             db.session.rollback()
-            flash(f"An error occurred. Venue {venue.name} could not be updated.")
+            flash(
+                f"An error occurred. Venue {venue.name} could not be updated."
+            )
             print(f"Error: {str(e)}")
         finally:
             db.session.close()

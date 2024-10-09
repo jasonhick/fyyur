@@ -16,7 +16,7 @@ def seed_data():
             county="England",
             address="211 Stockwell Rd, London SW9 9SL",
             phone="+44 20 7771 3000",
-            website="https://www.academymusicgroup.com/o2academybrixton/",
+            website_link="https://www.academymusicgroup.com/o2academybrixton/",
             facebook_link="https://www.facebook.com/O2AcademyBrixton/",
             seeking_talent=False,
             seeking_description="",
@@ -29,7 +29,7 @@ def seed_data():
             county="Nottinghamshire",
             address="8 Talbot St, Nottingham NG1 5GG",
             phone="+44 115 950 6547",
-            website="https://www.rock-city.co.uk/",
+            website_link="https://www.rock-city.co.uk/",
             facebook_link="https://www.facebook.com/rockcitynottingham/",
             seeking_talent=False,
             seeking_description="",
@@ -42,7 +42,7 @@ def seed_data():
             county="Merseyside",
             address="160 Mount Pleasant, Liverpool L3 5TR",
             phone="+44 151 794 6868",
-            website="https://www.liverpoolguild.org/",
+            website_link="https://www.liverpoolguild.org/",
             facebook_link="https://www.facebook.com/liverpoolguild",
             seeking_talent=False,
             seeking_description="",
@@ -55,7 +55,7 @@ def seed_data():
             county="Wales",
             address="11 Womanby St, Cardiff CF10 1BR",
             phone="+44 29 2023 2199",
-            website="https://www.clwb.net/",
+            website_link="https://www.clwb.net/",
             facebook_link="https://www.facebook.com/clwbiforbach",
             seeking_talent=True,
             seeking_description="Looking for emerging Welsh talent.",
@@ -68,7 +68,7 @@ def seed_data():
             county="England",
             address="Under the Arches, Villiers St, Charing Cross, London WC2N 6NG",
             phone="+44 20 7930 2020",
-            website="https://heaven-live.co.uk/",
+            website_link="https://heaven-live.co.uk/",
             facebook_link="https://www.facebook.com/HeavenNightclub/",
             seeking_talent=False,
             seeking_description="",
@@ -162,11 +162,21 @@ def seed_data():
         return
     else:
         # Create sample shows
-        show1 = Show(artist_id=1, venue_id=1, start_time=datetime(2024, 11, 21, 21, 30))
-        show2 = Show(artist_id=2, venue_id=2, start_time=datetime(2024, 11, 21, 20, 00))
-        show3 = Show(artist_id=3, venue_id=3, start_time=datetime(2024, 11, 21, 20, 00))
-        show4 = Show(artist_id=4, venue_id=4, start_time=datetime(2023, 11, 21, 20, 00))
-        show5 = Show(artist_id=5, venue_id=5, start_time=datetime(2023, 11, 21, 20, 00))
+        show1 = Show(
+            artist_id=1, venue_id=1, start_time=datetime(2024, 11, 21, 21, 30)
+        )
+        show2 = Show(
+            artist_id=2, venue_id=2, start_time=datetime(2024, 11, 21, 20, 00)
+        )
+        show3 = Show(
+            artist_id=3, venue_id=3, start_time=datetime(2024, 11, 21, 20, 00)
+        )
+        show4 = Show(
+            artist_id=4, venue_id=4, start_time=datetime(2023, 11, 21, 20, 00)
+        )
+        show5 = Show(
+            artist_id=5, venue_id=5, start_time=datetime(2023, 11, 21, 20, 00)
+        )
 
         db.session.add_all([show1, show2, show3, show4, show5])
         db.session.commit()

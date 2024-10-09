@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask_wtf import Form
+from flask_wtf import FlaskForm as Form
 from wtforms import (
     BooleanField,
     DateTimeField,
@@ -97,7 +97,9 @@ def get_venues():
 
 
 class ShowForm(Form):
-    artist_id = SelectField("artist_id", choices=[], validators=[DataRequired()])
+    artist_id = SelectField(
+        "artist_id", choices=[], validators=[DataRequired()]
+    )
     venue_id = SelectField("venue_id", choices=[], validators=[DataRequired()])
     start_time = DateTimeField(
         "start_time", validators=[DataRequired()], default=datetime.today()

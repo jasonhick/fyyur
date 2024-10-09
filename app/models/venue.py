@@ -16,7 +16,7 @@ class Venue(db.Model):
     phone = db.Column(db.String(120), nullable=False)
     seeking_description = db.Column(db.String(500))
     seeking_talent = db.Column(db.Boolean, default=False)
-    website = db.Column(db.String(500))
+    website_link = db.Column(db.String(500))
     shows = db.relationship("Show", backref="venue", cascade="all, delete")
 
     def __repr__(self):
